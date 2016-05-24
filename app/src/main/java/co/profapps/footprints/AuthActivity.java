@@ -25,6 +25,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import co.profapps.footprints.util.AppUtils;
+
 public class AuthActivity extends AppCompatActivity {
     private static final String TAG = AuthActivity.class.getSimpleName();
 
@@ -81,7 +83,10 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
-        //
+        // Customize action bar on recent windows
+        AppUtils.setAppBarColorOnRecentWindows(this);
+
+        // Style status bar and hide action bar
         getWindow().setStatusBarColor(ContextCompat.getColor(this,
                 R.color.colorDarkGray));
 
@@ -127,17 +132,9 @@ public class AuthActivity extends AppCompatActivity {
                             Toast.makeText(AuthActivity.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            AlertDialog alert = new AlertDialog.Builder(AuthActivity.this).create();
-                            alert.setTitle(getString(R.string.dialog_error_title));
-                            alert.setMessage(task.getException().getLocalizedMessage());
-                            alert.setButton(AlertDialog.BUTTON_POSITIVE,
-                                    getString(R.string.dismiss),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                        }
-                                    });
+                            AppUtils.showDialog(AuthActivity.this,
+                                    getString(R.string.dialog_error_title),
+                                    task.getException().getLocalizedMessage());
                         }
                     }
                 });
