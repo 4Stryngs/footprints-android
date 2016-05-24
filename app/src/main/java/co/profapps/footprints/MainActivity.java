@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import co.profapps.footprints.util.AppUtils;
@@ -96,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private void logout() {
         FirebaseAuth.getInstance().signOut();
-        LoginManager.getInstance().logOut();
-
         startAuthActivity();
     }
 
