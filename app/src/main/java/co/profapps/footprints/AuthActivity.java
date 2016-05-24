@@ -72,12 +72,10 @@ public class AuthActivity extends AppCompatActivity {
                 authListenerNotifyCalls++;
 
                 if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                      if (authListenerNotifyCalls == 2) {
                          startMainActivity();
                      }
                 } else {
-                    // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
