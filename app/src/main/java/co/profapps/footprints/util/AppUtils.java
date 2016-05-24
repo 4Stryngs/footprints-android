@@ -43,7 +43,7 @@ public final class AppUtils {
         activity.setTaskDescription(taskDescription);
     }
 
-    public static boolean appIsInstalled(@NonNull Context context, @NonNull String packageName) {
+    public static boolean appIsInstalled(@NonNull String packageName, @NonNull Context context) {
         PackageManager packageManager = context.getPackageManager();
 
         try {
