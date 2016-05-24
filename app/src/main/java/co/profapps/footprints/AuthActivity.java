@@ -3,6 +3,7 @@ package co.profapps.footprints;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -80,6 +81,14 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
+        //
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,
+                R.color.colorDarkGray));
+
+        if (getSupportActionBar() != null && getSupportActionBar().isShowing()) {
+            getSupportActionBar().hide();
+        }
+
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.button_facebook_login);
@@ -119,7 +128,7 @@ public class AuthActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             AlertDialog alert = new AlertDialog.Builder(AuthActivity.this).create();
-                            alert.setTitle(getString(R.string.ooops));
+                            alert.setTitle(getString(R.string.dialog_error_title));
                             alert.setMessage(task.getException().getLocalizedMessage());
                             alert.setButton(AlertDialog.BUTTON_POSITIVE,
                                     getString(R.string.dismiss),
