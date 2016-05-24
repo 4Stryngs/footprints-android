@@ -1,14 +1,11 @@
 package co.profapps.footprints;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -33,6 +30,7 @@ public class AuthActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private CallbackManager callbackManager;
+    private int authListenerNotifyCalls = 0;
 
     @Override
     public void onStart() {
@@ -71,9 +69,13 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                authListenerNotifyCalls++;
 
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                     if (authListenerNotifyCalls == 2) {
+                         startMainActivity();
+                     }
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -128,9 +130,7 @@ public class AuthActivity extends AppCompatActivity {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         if (task.isSuccessful()) {
-                            // TODO: load main activity
-                            Toast.makeText(AuthActivity.this, "Authentication success.",
-                                    Toast.LENGTH_SHORT).show();
+                            startMainActivity();
                         } else {
                             AppUtils.showDialog(AuthActivity.this,
                                     getString(R.string.dialog_error_title),
@@ -138,5 +138,13 @@ public class AuthActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(intent);
+        finish();
     }
 }
